@@ -99,7 +99,7 @@ public class Orchestrator {
      */
     private IIdentifier generateIdentifier(int j){
         // it not beautiful but for this specific case works well
-        BigInteger base = BigInteger.ONE.add(BigInteger.ONE);
+        BigInteger base = BigInteger.valueOf(2);
         // getting the range extremes
         BigInteger low = base.pow(j);
         BigInteger high = base.pow(j+1).min(base.pow(this.m));

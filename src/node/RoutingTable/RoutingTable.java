@@ -51,10 +51,10 @@ public class RoutingTable implements IRoutingTable{
     private int findBucketIndex(BigInteger xordistance) throws IndexOutOfBoundsException {
         if (xordistance.compareTo(BigInteger.ZERO)== 0)
             throw new IndexOutOfBoundsException("xor distance cannot be 0!");
-        // applying the log to find the right bucket
         
-        Double position =  Math.log(xordistance.doubleValue())/Math.log(2);
-        return position.intValue();
+        
+        int i = xordistance.bitLength() -1;
+        return i;
     }
     
 
