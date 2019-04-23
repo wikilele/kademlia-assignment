@@ -6,7 +6,7 @@
 package gephi;
 
 import java.io.File;
-import java.io.FileWriter;
+
 import java.io.IOException;
 
 import org.gephi.io.exporter.api.ExportController;
@@ -14,7 +14,7 @@ import org.gephi.io.exporter.api.ExportController;
 import org.gephi.io.importer.api.Container;
 import org.gephi.io.importer.api.EdgeDirectionDefault;
 import org.gephi.io.importer.api.ImportController;
-import org.gephi.io.exporter.spi.GraphExporter;
+
 import org.gephi.io.processor.plugin.DefaultProcessor;
 import org.gephi.project.api.ProjectController;
 import org.gephi.graph.api.GraphModel;
@@ -35,9 +35,7 @@ import org.gephi.preview.api.*;
 import org.gephi.preview.types.EdgeColor;
 import java.awt.Color;
 
-import org.jsoup.nodes.*;
-import org.jsoup.Jsoup;
-import java.nio.file.Files;
+
 
 /**
  *
