@@ -5,6 +5,7 @@
  */
 package node.Node;
 
+import java.math.BigInteger;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -28,7 +29,7 @@ public class LookUpJUnitTest {
     
     public LookUpJUnitTest() {
         kademlia = new KademliaNodeList(m,k, alpha);
-        kademlia.addNode(0);
+        kademlia.addNode(BigInteger.ZERO);
     }
         
     /**
@@ -39,11 +40,11 @@ public class LookUpJUnitTest {
             
         INode bootstrap = kademlia.getBootstrapNode();          
         
-        INode addedNode = kademlia.addNode(1);
+        INode addedNode = kademlia.addNode(BigInteger.valueOf(1));
 
         addedNode.ADD_CONTACT(bootstrap);
         // the id value doesn't matter in this case                           
-        IIdentifier tolookId = new BinStringIdentifier(10,m);
+        IIdentifier tolookId = new BinStringIdentifier(BigInteger.valueOf(10),m);
                 
         List<INode> closestNodes = addedNode.LOOKUP(tolookId);
         
@@ -61,14 +62,14 @@ public class LookUpJUnitTest {
         allNodes.add(kademlia.getBootstrapNode());
         for (int i = 1; i < n; i++){   
                        
-            INode addedNode = kademlia.addNode(i);
+            INode addedNode = kademlia.addNode(BigInteger.valueOf(i));
             for(INode n :allNodes){
                 addedNode.ADD_CONTACT(n);
             }
             allNodes.add(addedNode);
      
         }
-        IIdentifier tolookId = new BinStringIdentifier(2,m);
+        IIdentifier tolookId = new BinStringIdentifier(BigInteger.valueOf(2),m);
         INode node;
         do{
             node = kademlia.getBootstrapNode();

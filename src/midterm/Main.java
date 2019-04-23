@@ -42,7 +42,7 @@ public class Main {
         
         String filecsv = LoggerSingleton.setFilePath(filecsvdir + "graph");
         
-        LoggerSingleton.setDEBUG(false);
+        LoggerSingleton.setDEBUG(true);
         
         Orchestrator o =  new Orchestrator(n,m,k, alpha);
         // initialization phase

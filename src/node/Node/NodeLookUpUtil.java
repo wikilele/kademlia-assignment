@@ -5,6 +5,7 @@
  */
 package node.Node;
 
+import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -119,17 +120,17 @@ public class NodeLookUpUtil {
     private class NodeTuple {
         private final INode node;
         // the distance between node and the ID input of the LOOKUP procedure
-        private final long xorDistance;
+        private final BigInteger xorDistance;
         private boolean queried;
         
-        public NodeTuple(INode n, long d, boolean b){
+        public NodeTuple(INode n, BigInteger d, boolean b){
             this.node = n;
             this.xorDistance = d;
             this.queried = b;
         }
         
         public INode getNode(){ return this.node;}
-        public long getXorDistance(){ return this.xorDistance;}
+        public BigInteger getXorDistance(){ return this.xorDistance;}
         public boolean isQueried(){ return this.queried;}
         public void setQueried(boolean val){ this.queried = val;}
         

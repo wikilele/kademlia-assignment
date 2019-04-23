@@ -7,6 +7,7 @@ package node.RoutingTable;
 
 import java.util.List;
 import node.Node.*;
+import java.math.BigInteger;
 
 /**
  *
@@ -29,13 +30,13 @@ public interface IRoutingTable {
      * @param xordistance MUST be greater than 0
      * @return should return a List of k INode closest to the target
      */
-    public List<INode> findNode(long xordistance);
+    public List<INode> findNode(BigInteger xordistance);
     
     /**
      * @param contact MUST not be the node holding this table
      * @param xordistance  MUST be greater than 0
      */
-    public void addContact(INode contact, long xordistance);
+    public void addContact(INode contact, BigInteger xordistance);
     
     public void print();
 }

@@ -127,7 +127,7 @@ public class GephiController {
     
         // Average Degree
         Degree deg = new Degree();
-        deg.execute(graphModel);
+        deg.execute(directedGraph);
         double degree = deg.getAverageDegree();
         System.out.println("Average degree " + degree);
         
@@ -136,13 +136,13 @@ public class GephiController {
         
         // Clustering Coefficient
         ClusteringCoefficient clustcoeff = new ClusteringCoefficient();
-        clustcoeff.execute(graphModel);
+        clustcoeff.execute(directedGraph);
         double ccoef = clustcoeff.getAverageClusteringCoefficient();
         System.out.println("Avg clustering coeff " + ccoef);
        
         // Diameter and Avg path length
         GraphDistance gdistance = new GraphDistance();
-        gdistance.execute(graphModel);
+        gdistance.execute(directedGraph);
         double diameter = gdistance.getDiameter();
         double pathlength = gdistance.getPathLength();
         

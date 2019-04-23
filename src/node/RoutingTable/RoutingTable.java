@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import node.Node.*;
 import java.lang.Math;
 import logger.LoggerSingleton;
+import java.math.BigInteger;;
 /**
  *
  * @author leonardo
@@ -47,16 +48,17 @@ public class RoutingTable implements IRoutingTable{
     /**
      * @param xordistance MUST be grater than zero
      */
-    private int findBucketIndex(long xordistance) throws IndexOutOfBoundsException {
-        if (xordistance == 0)
+    private int findBucketIndex(BigInteger xordistance) throws IndexOutOfBoundsException {
+        if (xordistance.compareTo(BigInteger.ZERO)== 0)
             throw new IndexOutOfBoundsException("xor distance cannot be 0!");
         // applying the log to find the right bucket
-        Double position =  Math.log(xordistance)/Math.log(2);
+        
+        Double position =  Math.log(xordistance.doubleValue())/Math.log(2);
         return position.intValue();
     }
     
 
-    public List<INode> findNode(long xordistance){       
+    public List<INode> findNode(BigInteger xordistance){       
         List<INode> retList = new LinkedList<INode>();
         
         int index = -1;
@@ -95,7 +97,7 @@ public class RoutingTable implements IRoutingTable{
     }
     
 
-    public void addContact(INode contact, long xordistance){      
+    public void addContact(INode contact, BigInteger xordistance){      
         int index = -1;
         try{
             index = findBucketIndex(xordistance);

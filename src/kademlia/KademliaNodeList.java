@@ -4,10 +4,12 @@
  * and open the template in the editor.
  */
 package kademlia;
+import java.math.BigInteger;
 import java.util.*;
 import node.Node.*;
 import node.Identifier.*;
 import node.RoutingTable.*;
+
 
 /**
  *
@@ -51,7 +53,7 @@ public class KademliaNodeList {
         }
     }
      
-    public INode addNode(long randomId){
+    public INode addNode(BigInteger randomId){
         IIdentifier id = new BinStringIdentifier(randomId, m);
         IRoutingTable rt = new RoutingTable(m,k);
         INode addn = new Node(id, rt, alpha);
@@ -66,6 +68,10 @@ public class KademliaNodeList {
         Random rand = new Random();
         int pos = rand.nextInt(nodeList.size());
         return nodeList.get(pos);
+    }
+    
+    public IIdentifier getIIdentifierObject(BigInteger l){
+        return new BinStringIdentifier(l, this.m);
     }
 
         

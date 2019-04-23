@@ -5,6 +5,7 @@
  */
 package node.RoutingTable;
 
+import java.math.BigInteger;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -27,7 +28,7 @@ public class BucketJUnitTest {
         b = new Bucket(0);
         
         for(long i=0; i<10; i++){
-            INode tmp = new Node(new BinStringIdentifier(i,m),
+            INode tmp = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),
                                     new RoutingTable(4,20),3);
             b.promoteToTail(tmp);
             

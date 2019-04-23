@@ -12,6 +12,8 @@ import static org.junit.Assert.*;
 import java.util.List;
 import node.Node.*;
 import node.Identifier.*;
+
+import java.math.BigInteger;
 /**
  *
  * @author leonardo
@@ -28,7 +30,7 @@ public class RoutingTableJUnitTest  {
     public RoutingTableJUnitTest() {
        
         rt = new RoutingTable(m,k);
-        holderNode = new Node(new BinStringIdentifier(0,m),rt,3);       
+        holderNode = new Node(new BinStringIdentifier(BigInteger.valueOf(0),m),rt,3);       
         
         mockrt = new RoutingTable(m,k);
     }
@@ -39,14 +41,14 @@ public class RoutingTableJUnitTest  {
     @Test 
     public void testAddContactAndFindNode1() {        
         for(long i = 1; i <= k; i++){
-            Node toAdd = new Node(new BinStringIdentifier(i,m),mockrt,3);
+            Node toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             long xor = holderNode.getIdentifier().toLong() ^i;
    
-            rt.addContact(toAdd, xor);
+            rt.addContact(toAdd, BigInteger.valueOf(xor));
         }
         rt.print();
         // in that case the xor distance is irrelevant because it must return k elem
-        List<INode> lni = rt.findNode(1);
+        List<INode> lni = rt.findNode(BigInteger.valueOf(1));
         
         assertEquals(k,lni.size());
     
@@ -61,14 +63,14 @@ public class RoutingTableJUnitTest  {
         System.out.println("test 2");
         rt.print();
         for(long i = 1; i <= k+1; i++){
-            Node toAdd = new Node(new BinStringIdentifier(i,m),mockrt,3);
-            long xor = holderNode.getIdentifier().xorDistance(toAdd.getIdentifier());
+            Node toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
+            BigInteger xor = holderNode.getIdentifier().xorDistance(toAdd.getIdentifier());
    
             rt.addContact(toAdd, xor);
         }
         rt.print();
         // in that case the xor distance is irrelevant because it must return k elem
-        List<INode> lni = rt.findNode(1);
+        List<INode> lni = rt.findNode(BigInteger.valueOf(1));
               
         assertEquals(k,lni.size());
     }
@@ -83,17 +85,17 @@ public class RoutingTableJUnitTest  {
     public void testAddContactAndFindNode3() {
         //A particular setup is needed for that test
         rt = new RoutingTable(m,3);
-        holderNode = new Node(new BinStringIdentifier(0,m),rt,3);      
+        holderNode = new Node(new BinStringIdentifier(BigInteger.valueOf(0),m),rt,3);      
         
         for(long i = 1; i <= 7; i++){
-            Node toAdd = new Node(new BinStringIdentifier(i,m),mockrt,3);
+            Node toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             long xor = holderNode.getIdentifier().toLong() ^i;
    
-            rt.addContact(toAdd, xor);
+            rt.addContact(toAdd, BigInteger.valueOf(xor));
         }
         rt.print();
         // want to address bucket with index 2 (so distance from 4 to 7)
-        List<INode> lni = rt.findNode(4);
+        List<INode> lni = rt.findNode(BigInteger.valueOf(4));
         long lastElemId = lni.get(lni.size()-1).getIdentifier().toLong();
         
         assertTrue(lastElemId == 4 || lastElemId == 7 );   
@@ -108,25 +110,24 @@ public class RoutingTableJUnitTest  {
     public void testAddContactAndFindNode4() {
         
         for(long i = 1; i <= k; i++){
-            INode toAdd = new Node(new BinStringIdentifier(i,m),mockrt,3);
+            INode toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             long xor = holderNode.getIdentifier().toLong() ^i;
    
-            rt.addContact(toAdd, xor);
+            rt.addContact(toAdd, BigInteger.valueOf(xor));
         }
         //reinserting an exsiting node
-        INode toAdd = new Node(new BinStringIdentifier(2,m),mockrt,3);
+        INode toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(2),m),mockrt,3);
         long xor = holderNode.getIdentifier().toLong() ^2;
    
-        rt.addContact(toAdd, xor);
-        rt.addContact(toAdd, xor);
-        
+        rt.addContact(toAdd, BigInteger.valueOf(xor));
+
         rt.print();
         /**
          * The Node with id 2 now should be at the tail of bucket 1 (distance from 2 to 3)
          * Since bucket 1  has only two elements the Node will be in the
          * second position of the returned list.
          */
-        List<INode> lni = rt.findNode(2);
+        List<INode> lni = rt.findNode(BigInteger.valueOf(2));
         
         long secondElemId = lni.get(1).getIdentifier().toLong();
         
@@ -141,17 +142,17 @@ public class RoutingTableJUnitTest  {
     public void testAddContactAndFindNode5() {
         //A particular setup is needed for that test
         rt = new RoutingTable(m,3);
-        holderNode = new Node(new BinStringIdentifier(0,m),rt,3);
+        holderNode = new Node(new BinStringIdentifier(BigInteger.valueOf(0),m),rt,3);
         
         for(long i = 1; i <= 6; i++){
-            Node toAdd = new Node(new BinStringIdentifier(i,m),mockrt,3);
+            Node toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             long xor = holderNode.getIdentifier().toLong() ^i;
    
-            rt.addContact(toAdd, xor);
+            rt.addContact(toAdd, BigInteger.valueOf(xor));
         }
         rt.print();
         // want to address bucket with index 1 (so distance from 2 to 4)
-        List<INode> lni = rt.findNode(2);
+        List<INode> lni = rt.findNode(BigInteger.valueOf(2));
         
         for(INode ni : lni){
             long id = ni.getIdentifier().toLong();
@@ -167,14 +168,14 @@ public class RoutingTableJUnitTest  {
     public void testAddContactAndFindNode6() {
        
         for(long i = 1; i <= 10; i++){
-            Node toAdd = new Node(new BinStringIdentifier(i,m),mockrt,3);
+            Node toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             long xor = holderNode.getIdentifier().toLong() ^i;
    
-            rt.addContact(toAdd, xor);
+            rt.addContact(toAdd, BigInteger.valueOf(xor));
         }
         rt.print();
         // want to address bucket with index 1 (so distance from 2 to 4)
-        List<INode> lni = rt.findNode(11).subList(0, 3);
+        List<INode> lni = rt.findNode(BigInteger.valueOf(11)).subList(0, 3);
         
         for(INode ni : lni){
             long id = ni.getIdentifier().toLong();

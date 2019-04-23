@@ -4,20 +4,21 @@
  * and open the template in the editor.
  */
 package midterm;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 import kademlia.*;
-import node.Identifier.BinStringIdentifier;
-import node.Node.*;
+import node.Node.INode;
 import node.Identifier.IIdentifier;
+import java.util.Random;
 
 /**
  *
  * @author leonardo
  */
 public class Orchestrator {
-    private List<Long> idList; //list of identifier already picked
+    private List<BigInteger> idList; //list of identifier already picked
     private final int n; //number of nodes
     private final int m; //length of the identifiers
     private final long maxIdsNum; //max number of identifiers
@@ -30,7 +31,7 @@ public class Orchestrator {
         maxIdsNum = (long)Math.pow(2, m);
         System.out.println("Max number of Id: " + maxIdsNum);
         
-        idList = new ArrayList<Long>();  
+        idList = new ArrayList<BigInteger>();  
                
         kademlia = new KademliaNodeList(m,k,a);        
     }
@@ -41,7 +42,7 @@ public class Orchestrator {
     * This phase is executed only once.
     */
     public void init(){
-        long randomId = pickRandomId();
+        BigInteger randomId = pickRandomId();
         kademlia.addNode(randomId);
     }
     
@@ -53,7 +54,7 @@ public class Orchestrator {
     public void routeTableConstruction(){
         for (int i = 0; i < (n-1); i++){
             
-            long randomId = pickRandomId();
+            BigInteger randomId = pickRandomId();
             INode bootstrap = kademlia.getBootstrapNode();                             
             
             // the node is inserted after the choice of the bootstrap node,
@@ -79,12 +80,12 @@ public class Orchestrator {
     /**
      * @return a random long not in the list of already choosen long.
      */
-    private long pickRandomId(){
-        long retval;
+    private BigInteger pickRandomId(){
+        BigInteger retval;
 
         do{
-            double rand = Math.random() * (double)maxIdsNum;
-            retval = (long) rand;           
+            //double rand = Math.random() * (double)maxIdsNum;
+            retval = new BigInteger(m,new Random());           
         }while (idList.contains(retval));
         
         idList.add(retval); 
@@ -105,7 +106,8 @@ public class Orchestrator {
         // computing a random from 0 to high - low
         double rnd = Math.random() * diff;
         // returning the id to be searched 
-        return new BinStringIdentifier((long)(low + rnd), this.m);
+        return kademlia.getIIdentifierObject(BigInteger.valueOf((long)(low + rnd)));
+       
     }
     
 }

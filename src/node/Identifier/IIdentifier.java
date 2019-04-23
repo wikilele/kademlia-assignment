@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package node.Identifier;
-
+import java.math.BigInteger;
 /**
  *
  * @author leonardo
@@ -12,9 +12,12 @@ package node.Identifier;
 public interface IIdentifier extends Comparable<IIdentifier> {
     
     public int length();
-    public long xorDistance(IIdentifier id);
-         
-    public String toString();
+    public BigInteger xorDistance(IIdentifier id);
+    
+    public BigInteger toBigInteger();
+    
+    public String toString();  
+    // should be used only for output purposes
     public long toLong();
     
 }
