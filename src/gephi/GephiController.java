@@ -44,21 +44,22 @@ import java.nio.file.Files;
  * @author leonardo
  */
 public class GephiController {
-    private String storeDir ;
-    private String csvFileName ;
-    private String maindir ;
-    private final int m;
-    private final int k;
+    private final String csvFileDir ;
+    private final String csvFilePath ;
+   
+    StatisticsUtils statUtils;
     
-    public GephiController(String dirname, String csvfilename, String mdir, int m, int k){
-        storeDir = dirname;
-        csvFileName = csvfilename;
-        maindir = mdir;
-        this.m = m;
-        this.k = k;
+    /**
+     * @param csvfilepath should be int he form: ./statistics/m8n100k10/run2/graph.csv
+     */
+    public GephiController( String csvfilepath, int m, int k){       
+        csvFilePath = csvfilepath;
+        csvFileDir = csvfilepath.substring(0, csvfilepath.length() -9);
+       
+        statUtils = new StatisticsUtils(m,k, csvFileDir);
     }
     
-    public void manageFilecsv(){      
+    public void processGraph(){      
         //Init a project - and therefore a workspace
         ProjectController pc = Lookup.getDefault().lookup(ProjectController.class);
         pc.newProject();
@@ -71,10 +72,9 @@ public class GephiController {
         Container container;
         try {
             
-            File file_node = new File(csvFileName );
+            File file_node = new File(csvFilePath );
             container = importController.importFile(file_node);
             container.getLoader().setEdgeDefault(EdgeDirectionDefault.DIRECTED);   //Force DIRECTED
-            container.getLoader().setAllowAutoNode(true);  //create missing nodes
             container.getLoader().setAutoScale(true);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -99,26 +99,27 @@ public class GephiController {
       
         autoLayout.execute();
         
-        
+        // just setting the edge color to have a better graph image
         PreviewController previewController = Lookup.getDefault().lookup(PreviewController.class);
         PreviewModel previewModel = previewController.getModel();
         previewModel.getProperties().putValue(PreviewProperty.EDGE_COLOR, new EdgeColor(Color.GRAY));
-
-    
+   
         previewModel.getProperties().putValue(PreviewProperty.EDGE_CURVED, Boolean.FALSE);
         previewModel.getProperties().putValue(PreviewProperty.EDGE_OPACITY, 60);  
         
-        // Export to file png or pdf
+        // Export to file png 
         ExportController ec = Lookup.getDefault().lookup(ExportController.class);
         try {
-            ec.exportFile(new File(storeDir + "graph.png"));
+            ec.exportFile(new File(csvFileDir + "graph.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
             return;
         }
 
     }
-    
+    /**
+     * Get the statistics from the graphModels and saves them.
+     */
     private void computeStatistics(GraphModel graphModel){
         DirectedGraph directedGraph = graphModel.getDirectedGraph();
         // Get Nodes and Edges count
@@ -132,7 +133,8 @@ public class GephiController {
         double degree = deg.getAverageDegree();
         System.out.println("Average degree " + degree);
         
-        getANDsaveReport(deg.getDirectedReport(), "degree_distribution.png");
+        // saving the degree distribution chart image
+         statUtils.getANDsaveReport(deg.getDirectedReport(), "degree_distribution.png");
         
         // Clustering Coefficient
         ClusteringCoefficient clustcoeff = new ClusteringCoefficient();
@@ -145,70 +147,14 @@ public class GephiController {
         gdistance.execute(graphModel);
         double diameter = gdistance.getDiameter();
         double pathlength = gdistance.getPathLength();
-
-        getANDsaveReport(gdistance.getReport(), "betweennescentrality_distribution.png");
+        
+        // saving the betweenness centrality  chart image
+         statUtils.getANDsaveReport(gdistance.getReport(), "betweennescentrality_distribution.png");
+        
         System.out.println("Diameter " + diameter);
         System.out.println("Path lenght " + pathlength);
         
-        saveStatistics(nodeCount,edgeCount,degree, ccoef, diameter, pathlength);
-    }
-    
-    private void saveStatistics(int nodeCount, int edgeCount, double degree,double ccoef,double diameter, double pathlength){
-        String headercsv = "m, n, k, edeges, avg-degree, clustering_coeff, diameter, avg-pathlength\n";
-        String line = m + "," + nodeCount + "," + k + "," + edgeCount + "," + 
-                degree + "," + ccoef + "," + diameter + "," + pathlength + "\n";
-        try{
-            FileWriter csvWriter = new FileWriter(storeDir + "statistics.csv" ); 
-            csvWriter.append(headercsv ); 
-            csvWriter.append(line ); 
-            csvWriter.flush(); 
-            csvWriter.close();
-            
-        } catch (IOException e ){
-            System.out.println(e);
-        }
-        
-        
-        try{
-            File allstatscsv = new File(maindir + "allstats.csv");
-
-            boolean justcreated = false;
-            if (!allstatscsv.exists()) {
-                allstatscsv.createNewFile();
-                justcreated = true;
-            } 
-       
-            FileWriter csvWriter = new FileWriter(maindir + "allstats.csv", true); 
-           if (justcreated) 
-               csvWriter.append(headercsv ); 
-            csvWriter.append(line ); 
-            csvWriter.flush(); 
-            csvWriter.close();
-            
-        } catch (IOException e ){
-            System.out.println(e);
-        }
-    }
-    
-    private void getANDsaveReport(String html, String filename){
-            Document doc = Jsoup.parse(html);
-            // the first img tag is what we need
-            Element image = doc.select("img").first();
-            // deleting the initial string 'file:'
-            String url = image.absUrl("src").substring(5); 
-            
-            File source = new File(url);
-            File dest = new File( storeDir + filename);
-            try {
-                copyFile(source,dest);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    
-    
-    private static void copyFile(File source, File dest) throws IOException {
-        Files.copy(source.toPath(), dest.toPath());
+         statUtils.saveStatistics(nodeCount,edgeCount,degree, ccoef, diameter, pathlength);
     }
 
 }

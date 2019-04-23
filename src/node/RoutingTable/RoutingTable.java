@@ -66,14 +66,9 @@ public class RoutingTable implements IRoutingTable{
             return retList;
         }
         int tmpindex = index;
-        /**
-         * if the tmpindex wraps around means that we have visited all the buckets
-         * so we must return the list even if its size is not bucketSize
-         * 
-         * "In any case, the recipient must return k items, unless there are 
-         * fewer than k nodes in all its k-buckets combined, in which case it
-         * returns every node it knows about."
-         */
+        
+        // if the tmpindex wraps around means that we have visited all the buckets
+        // so we must return the list even if its size is not bucketSize
         boolean returnedAll = false;
         int scanningIndex = -1;
         while (retList.size() < bucketSize && !returnedAll ){

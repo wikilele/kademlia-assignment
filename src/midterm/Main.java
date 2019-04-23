@@ -37,26 +37,29 @@ public class Main {
         System.out.printf("m=%d n=%d k=%d \n",m,n,k);
              
         String parameters = "m" + m + "n" + n + "k" + k;
+        // preparing the statistics directory and getting the right dir for this run
         String filecsvdir = getWorkingDir(parameters);
         
         String filecsv = LoggerSingleton.setFilePath(filecsvdir + "graph");
         
         LoggerSingleton.setDEBUG(false);
         
-        Orchestrator o =  new Orchestrator(n,m,k, alpha);       
+        Orchestrator o =  new Orchestrator(n,m,k, alpha);
+        // initialization phase
         o.init();     
+        // route table construction
         o.routeTableConstruction();
         
         LoggerSingleton.getIstance().close();     
       
-        // 
-        GephiController gc = new GephiController(filecsvdir, filecsv, "./statistics/", m,k);
-        gc.manageFilecsv();
+        // somethis like ./statistics/m8n100k10/run2/graph.csv should be passed
+        GephiController gc = new GephiController(filecsv,m,k);
+        gc.processGraph();
     }
     
     /**
-     * the parameters are used as name to differentiate the runs
-     * each parameters will have its own directory and in each of them there
+     * the parameters are used as name to differentiate the runs;
+     * each parameters will have their own directory and in each of them there
      * will be a directory for each run with the same parameters
      */
     private static String getWorkingDir(String parameters){
@@ -75,7 +78,7 @@ public class Main {
         File currentRun = new File(maindir + parameters + "/run1/");
         File[] filesList = parametersDir.listFiles();
         if (filesList.length == 0){
-            // if the directory is empy just make the directory run1
+            // if the directory is empty just make the directory run1
             currentRun.mkdirs();
         }else{
            // if it's not empty check the last run number and create the
