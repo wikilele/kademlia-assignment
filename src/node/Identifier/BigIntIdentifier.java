@@ -9,14 +9,14 @@ import java.math.BigInteger;
  *
  * @author leonardo
  */
-public class BinStringIdentifier implements IIdentifier {
+public class BigIntIdentifier implements IIdentifier {
     private BigInteger ID ;
     private int m;
     
     /**
     * @assumption alll the identifier must be initialized passing the same vale of m
     */
-    public BinStringIdentifier(BigInteger id, int m){
+    public BigIntIdentifier(BigInteger id, int m){
         // padding the string with zeroes until it reaches length m
         /*ID = String.format("%1$" + m + "s", Long.toBinaryString(id))
                     .replace(" ","0");  */

@@ -84,7 +84,6 @@ public class Orchestrator {
         BigInteger retval;
 
         do{
-            //double rand = Math.random() * (double)maxIdsNum;
             retval = new BigInteger(m,new Random());           
         }while (idList.contains(retval));
         
@@ -99,14 +98,17 @@ public class Orchestrator {
      * buckets of the routing tables of p.
      */
     private IIdentifier generateIdentifier(int j){
+        // it not beautiful but for this specific case works well
+        BigInteger base = BigInteger.ONE.add(BigInteger.ONE);
         // getting the range extremes
-        double low = Math.pow(2, j);
-        double high = Math.min(Math.pow(2, j +1), Math.pow(2, this.m));
-        double diff = high - low;
+        BigInteger low = base.pow(j);
+        BigInteger high = base.pow(j+1).min(base.pow(this.m));
+        long diff = high.subtract(low).longValue();
+        
         // computing a random from 0 to high - low
-        double rnd = Math.random() * diff;
+        long rnd = (long) (Math.random() * diff);
         // returning the id to be searched 
-        return kademlia.getIIdentifierObject(BigInteger.valueOf((long)(low + rnd)));
+        return kademlia.getIIdentifierObject(low.add(BigInteger.valueOf(rnd)));
        
     }
     

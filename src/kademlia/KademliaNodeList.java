@@ -54,7 +54,7 @@ public class KademliaNodeList {
     }
      
     public INode addNode(BigInteger randomId){
-        IIdentifier id = new BinStringIdentifier(randomId, m);
+        IIdentifier id = new BigIntIdentifier(randomId, m);
         IRoutingTable rt = new RoutingTable(m,k);
         INode addn = new Node(id, rt, alpha);
         __addNodeRecursive(addn,0);
@@ -71,7 +71,7 @@ public class KademliaNodeList {
     }
     
     public IIdentifier getIIdentifierObject(BigInteger l){
-        return new BinStringIdentifier(l, this.m);
+        return new BigIntIdentifier(l, this.m);
     }
 
         

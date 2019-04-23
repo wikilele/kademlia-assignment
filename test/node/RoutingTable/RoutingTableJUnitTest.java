@@ -30,7 +30,7 @@ public class RoutingTableJUnitTest  {
     public RoutingTableJUnitTest() {
        
         rt = new RoutingTable(m,k);
-        holderNode = new Node(new BinStringIdentifier(BigInteger.valueOf(0),m),rt,3);       
+        holderNode = new Node(new BigIntIdentifier(BigInteger.valueOf(0),m),rt,3);       
         
         mockrt = new RoutingTable(m,k);
     }
@@ -41,7 +41,7 @@ public class RoutingTableJUnitTest  {
     @Test 
     public void testAddContactAndFindNode1() {        
         for(long i = 1; i <= k; i++){
-            Node toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
+            Node toAdd = new Node(new BigIntIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             long xor = holderNode.getIdentifier().toLong() ^i;
    
             rt.addContact(toAdd, BigInteger.valueOf(xor));
@@ -63,7 +63,7 @@ public class RoutingTableJUnitTest  {
         System.out.println("test 2");
         rt.print();
         for(long i = 1; i <= k+1; i++){
-            Node toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
+            Node toAdd = new Node(new BigIntIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             BigInteger xor = holderNode.getIdentifier().xorDistance(toAdd.getIdentifier());
    
             rt.addContact(toAdd, xor);
@@ -85,10 +85,10 @@ public class RoutingTableJUnitTest  {
     public void testAddContactAndFindNode3() {
         //A particular setup is needed for that test
         rt = new RoutingTable(m,3);
-        holderNode = new Node(new BinStringIdentifier(BigInteger.valueOf(0),m),rt,3);      
+        holderNode = new Node(new BigIntIdentifier(BigInteger.valueOf(0),m),rt,3);      
         
         for(long i = 1; i <= 7; i++){
-            Node toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
+            Node toAdd = new Node(new BigIntIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             long xor = holderNode.getIdentifier().toLong() ^i;
    
             rt.addContact(toAdd, BigInteger.valueOf(xor));
@@ -110,13 +110,13 @@ public class RoutingTableJUnitTest  {
     public void testAddContactAndFindNode4() {
         
         for(long i = 1; i <= k; i++){
-            INode toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
+            INode toAdd = new Node(new BigIntIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             long xor = holderNode.getIdentifier().toLong() ^i;
    
             rt.addContact(toAdd, BigInteger.valueOf(xor));
         }
         //reinserting an exsiting node
-        INode toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(2),m),mockrt,3);
+        INode toAdd = new Node(new BigIntIdentifier(BigInteger.valueOf(2),m),mockrt,3);
         long xor = holderNode.getIdentifier().toLong() ^2;
    
         rt.addContact(toAdd, BigInteger.valueOf(xor));
@@ -142,10 +142,10 @@ public class RoutingTableJUnitTest  {
     public void testAddContactAndFindNode5() {
         //A particular setup is needed for that test
         rt = new RoutingTable(m,3);
-        holderNode = new Node(new BinStringIdentifier(BigInteger.valueOf(0),m),rt,3);
+        holderNode = new Node(new BigIntIdentifier(BigInteger.valueOf(0),m),rt,3);
         
         for(long i = 1; i <= 6; i++){
-            Node toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
+            Node toAdd = new Node(new BigIntIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             long xor = holderNode.getIdentifier().toLong() ^i;
    
             rt.addContact(toAdd, BigInteger.valueOf(xor));
@@ -168,7 +168,7 @@ public class RoutingTableJUnitTest  {
     public void testAddContactAndFindNode6() {
        
         for(long i = 1; i <= 10; i++){
-            Node toAdd = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),mockrt,3);
+            Node toAdd = new Node(new BigIntIdentifier(BigInteger.valueOf(i),m),mockrt,3);
             long xor = holderNode.getIdentifier().toLong() ^i;
    
             rt.addContact(toAdd, BigInteger.valueOf(xor));

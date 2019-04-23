@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 import kademlia.KademliaNodeList;
 import node.Identifier.IIdentifier;
-import node.Identifier.BinStringIdentifier;
+import node.Identifier.BigIntIdentifier;
 import java.util.Random;
 import java.util.LinkedList;
 
@@ -44,7 +44,7 @@ public class LookUpJUnitTest {
 
         addedNode.ADD_CONTACT(bootstrap);
         // the id value doesn't matter in this case                           
-        IIdentifier tolookId = new BinStringIdentifier(BigInteger.valueOf(10),m);
+        IIdentifier tolookId = new BigIntIdentifier(BigInteger.valueOf(10),m);
                 
         List<INode> closestNodes = addedNode.LOOKUP(tolookId);
         
@@ -69,7 +69,7 @@ public class LookUpJUnitTest {
             allNodes.add(addedNode);
      
         }
-        IIdentifier tolookId = new BinStringIdentifier(BigInteger.valueOf(2),m);
+        IIdentifier tolookId = new BigIntIdentifier(BigInteger.valueOf(2),m);
         INode node;
         do{
             node = kademlia.getBootstrapNode();

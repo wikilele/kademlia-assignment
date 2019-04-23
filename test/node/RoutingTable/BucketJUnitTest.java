@@ -28,7 +28,7 @@ public class BucketJUnitTest {
         b = new Bucket(0);
         
         for(long i=0; i<10; i++){
-            INode tmp = new Node(new BinStringIdentifier(BigInteger.valueOf(i),m),
+            INode tmp = new Node(new BigIntIdentifier(BigInteger.valueOf(i),m),
                                     new RoutingTable(4,20),3);
             b.promoteToTail(tmp);
             
