@@ -35,7 +35,12 @@ public class Main {
         int alpha = 3; // alpha is set to 3 at compile time, this can be easily changed
         
         System.out.printf("m=%d n=%d k=%d \n",m,n,k);
-             
+        
+        if (n > Math.pow(2, m)) {
+            System.out.println("TOO MANY NODES !");
+            return;
+        }
+        
         String parameters = "m" + m + "n" + n + "k" + k;
         // preparing the statistics directory and getting the right dir for this run
         String filecsvdir = getWorkingDir(parameters);

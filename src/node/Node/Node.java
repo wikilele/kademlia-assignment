@@ -39,11 +39,9 @@ public class Node extends INode{
     @Override
     public FindNodeResponse FIND_NODE(IIdentifier tofindID, List<INode> traversed){
         List<INode> nodesFound;
-        if(tofindID.compareTo(this.getIdentifier()) == 0 )
-            nodesFound =  new LinkedList<>();        
-        else
-            //The FIND_NODE logic is in the Routing Table class since it has the infos about the buckets.
-            nodesFound = rt.findNode(ID.xorDistance(tofindID));
+
+        //The FIND_NODE logic is in the Routing Table class since it has the infos about the buckets.
+        nodesFound = rt.findNode(ID.xorDistance(tofindID));
         
         // the nodes traversed by the previous FIND_NODEs are added to this.routingtable
         traversed.forEach(n -> this.ADD_CONTACT(n));

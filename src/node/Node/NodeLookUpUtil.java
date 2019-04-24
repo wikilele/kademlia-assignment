@@ -31,7 +31,7 @@ public class NodeLookUpUtil {
         this.k = k;
     }    
     
-    public List<INode> lookUp(IIdentifier tolookID){
+    public List<INode> lookUp(IIdentifier tolookID) throws Exception{
         // used to keep track of the nodes traversed by the FIND_NODE
         List<INode> traversed = new LinkedList(); 
         // this variable is used just to pack and unpack the FIND_NODE response
@@ -42,7 +42,8 @@ public class NodeLookUpUtil {
         // taking alpha contacts from the non-empty k-bucket closest to the key
         // if a node has just entered the kademlia network,
         // it will have only the bootstrap node in its routing table
-        response = holderNode.FIND_NODE(tolookID, new LinkedList());
+        response = holderNode.FIND_NODE(tolookID, traversed);
+        traversed = response.getINodesTraversed();
                 
         // adding the node fonded in the closest node, sorting and taking the first alpha
         kAbsoluteClosestNodes = addAll(kAbsoluteClosestNodes,response.getINodesFound(),tolookID);   
@@ -71,7 +72,7 @@ public class NodeLookUpUtil {
                 
                 i = i + 1;                                       
             }
-            
+
             // send FIND_NODE to the aplha choosen contacts
             for(NodeTuple nToQuery : notQueriedAlphaNodes){
                 
@@ -94,7 +95,7 @@ public class NodeLookUpUtil {
         //}while(!closestNode.equalTo(oldclosestNode));
             // we exit if AbsoluteClosestNodes remains the same for 2 consecutives iterations
         }while(!kAbsoluteClosestNodes.equals(oldClosestList ));
-        
+
         // send FIND_NODE to the remaining not queired nodes
         List<INode> returnedNodes = new LinkedList<>();
         for (NodeTuple t : kAbsoluteClosestNodes ){

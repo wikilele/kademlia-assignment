@@ -86,39 +86,43 @@ public class GephiController {
         GraphModel graphModel = Lookup.getDefault().lookup(GraphController.class).getGraphModel();
        
         //computing the statistics
-        computeStatistics(graphModel);
-         
-        // Executing FruchtermanReingold  layout algorithm
-        FruchtermanReingold frlayout = new FruchtermanReingold(new FruchtermanReingoldBuilder() );
-       
-        AutoLayout autoLayout = new AutoLayout(1, TimeUnit.SECONDS);
-        autoLayout.setGraphModel(graphModel);
-        autoLayout.addLayout(frlayout, 1f);
-      
-        autoLayout.execute();
+        int nodesNum = computeStatistics(graphModel);
         
-        // just setting the edge color to have a better graph image
-        PreviewController previewController = Lookup.getDefault().lookup(PreviewController.class);
-        PreviewModel previewModel = previewController.getModel();
-        previewModel.getProperties().putValue(PreviewProperty.EDGE_COLOR, new EdgeColor(Color.GRAY));
-   
-        previewModel.getProperties().putValue(PreviewProperty.EDGE_CURVED, Boolean.FALSE);
-        previewModel.getProperties().putValue(PreviewProperty.EDGE_OPACITY, 60);  
-        
-        // Export to file png 
-        ExportController ec = Lookup.getDefault().lookup(ExportController.class);
-        try {
-            ec.exportFile(new File(csvFileDir + "graph.png"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return;
-        }
+        // generating the image for too many nodes is only time consuming
+        // the image is good only for small numbers of nodes
+        if (nodesNum <= 800){
+            // Executing FruchtermanReingold  layout algorithm
+            FruchtermanReingold frlayout = new FruchtermanReingold(new FruchtermanReingoldBuilder() );
 
+            AutoLayout autoLayout = new AutoLayout(1, TimeUnit.SECONDS);
+            autoLayout.setGraphModel(graphModel);
+            autoLayout.addLayout(frlayout, 1f);
+
+            autoLayout.execute();
+
+            // just setting the edge color to have a better graph image
+            PreviewController previewController = Lookup.getDefault().lookup(PreviewController.class);
+            PreviewModel previewModel = previewController.getModel();
+            previewModel.getProperties().putValue(PreviewProperty.EDGE_COLOR, new EdgeColor(Color.GRAY));
+
+            previewModel.getProperties().putValue(PreviewProperty.EDGE_CURVED, Boolean.FALSE);
+            previewModel.getProperties().putValue(PreviewProperty.EDGE_OPACITY, 60);  
+
+            // Export to file png 
+            ExportController ec = Lookup.getDefault().lookup(ExportController.class);
+            try {
+                ec.exportFile(new File(csvFileDir + "graph.png"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                return;
+            }
+        }
     }
     /**
      * Get the statistics from the graphModels and saves them.
+     * @return the number of nodes
      */
-    private void computeStatistics(GraphModel graphModel){
+    private int computeStatistics(GraphModel graphModel){
         DirectedGraph directedGraph = graphModel.getDirectedGraph();
         // Get Nodes and Edges count
         int nodeCount = directedGraph.getNodeCount();
@@ -153,6 +157,8 @@ public class GephiController {
         System.out.println("Path lenght " + pathlength);
         
          statUtils.saveStatistics(nodeCount,edgeCount,degree, ccoef, diameter, pathlength);
+         
+        return nodeCount;
     }
 
 }

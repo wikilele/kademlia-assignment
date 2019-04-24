@@ -78,5 +78,5 @@ public class KademliaNodeList {
     public void print(){
         nodeList.forEach((node) -> node.print());
     }
-    
+
 }
