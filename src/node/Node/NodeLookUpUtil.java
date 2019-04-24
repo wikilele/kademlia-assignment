@@ -42,10 +42,8 @@ public class NodeLookUpUtil {
         // taking alpha contacts from the non-empty k-bucket closest to the key
         // if a node has just entered the kademlia network,
         // it will have only the bootstrap node in its routing table
-        response = holderNode.FIND_NODE(tolookID, traversed);
-        
-        traversed = response.getINodesTraversed();
-        
+        response = holderNode.FIND_NODE(tolookID, new LinkedList());
+                
         // adding the node fonded in the closest node, sorting and taking the first alpha
         kAbsoluteClosestNodes = addAll(kAbsoluteClosestNodes,response.getINodesFound(),tolookID);   
         kAbsoluteClosestNodes = this.sortANDlimitNodeTuples(kAbsoluteClosestNodes, alpha);
@@ -53,11 +51,16 @@ public class NodeLookUpUtil {
         // we assume the caller node has at leat one node in its routing table
         if (kAbsoluteClosestNodes.size() <= 0 ) return new LinkedList<INode>();
         
-        // the absolutely closest node to the target
-        INode closestNode = kAbsoluteClosestNodes.get(0).getNode();
-        INode oldclosestNode; // this variable is used to exit the loop below
-        
+        // TODO remove this 
+        // the absolutely closest node to the target 
+        // INode closestNode = kAbsoluteClosestNodes.get(0).getNode();
+        // INode oldclosestNode; // this variable is used to exit the loop below
+        // used as exit condition in the while loop
+        List<NodeTuple> oldClosestList ;
+
         do{
+            oldClosestList = kAbsoluteClosestNodes;
+
             // select from k-closest, alpha closest contacts which have not been queried yet
             List<NodeTuple> notQueriedAlphaNodes = new LinkedList<>();
             int i = 0;
@@ -65,7 +68,8 @@ public class NodeLookUpUtil {
                 // the first three not queried node will be added to the list
                 if(!kAbsoluteClosestNodes.get(i).isQueried())
                         notQueriedAlphaNodes.add(kAbsoluteClosestNodes.get(i));
-                                                
+                
+                i = i + 1;                                       
             }
             
             // send FIND_NODE to the aplha choosen contacts
@@ -74,20 +78,22 @@ public class NodeLookUpUtil {
                 response = nToQuery.getNode().FIND_NODE(tolookID, traversed);
                 nToQuery.setQueried(true);
                 
-                traversed = response.getINodesTraversed();               
-                
+                traversed = response.getINodesTraversed();     
+
+                populateThisRoutingTableWith(response.getINodesFound());
+                        
                 // add to k-closest the new received nodes, sorting and taking the first k
                 kAbsoluteClosestNodes = addAll(kAbsoluteClosestNodes, response.getINodesFound(),tolookID);                
                 kAbsoluteClosestNodes = this.sortANDlimitNodeTuples(kAbsoluteClosestNodes, k);
                 
             }
             // update closestNode
-            oldclosestNode = closestNode;
-            closestNode = kAbsoluteClosestNodes.get(0).getNode();
-         
-            // we exit if closestNode remains the same for 2 consecutives iterations
-        }while(!closestNode.equalTo(oldclosestNode));
-        
+            // oldclosestNode = closestNode;
+            // closestNode = kAbsoluteClosestNodes.get(0).getNode();
+            
+        //}while(!closestNode.equalTo(oldclosestNode));
+            // we exit if AbsoluteClosestNodes remains the same for 2 consecutives iterations
+        }while(!kAbsoluteClosestNodes.equals(oldClosestList ));
         
         // send FIND_NODE to the remaining not queired nodes
         List<INode> returnedNodes = new LinkedList<>();
@@ -100,6 +106,7 @@ public class NodeLookUpUtil {
                 traversed = response.getINodesTraversed();
             }
         }
+        populateThisRoutingTableWith(returnedNodes);
         
         // adding to closest node, sorting and taking the first k
         kAbsoluteClosestNodes = addAll(kAbsoluteClosestNodes,returnedNodes,tolookID);
@@ -107,13 +114,17 @@ public class NodeLookUpUtil {
         
         // traversed will contain all the nodes traversed by the routing table
         // the holder node will populate its rt with this nodes
-        traversed.forEach(n -> holderNode.ADD_CONTACT(n));
+        populateThisRoutingTableWith(traversed);
         
         // return the closest nodes
         List<INode> retList = new LinkedList<>(); 
         kAbsoluteClosestNodes.forEach(t -> retList.add(t.getNode()) );
 
         return retList;
+    }
+    
+    void populateThisRoutingTableWith(List<INode> toadd){
+        toadd.forEach(n -> holderNode.ADD_CONTACT(n));
     }
           
     

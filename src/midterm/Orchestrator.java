@@ -69,8 +69,9 @@ public class Orchestrator {
             for(int j= 0; j < m ; j ++){
                 IIdentifier tolookId = generateIdentifier(j);
                 
+                // the LOOKUP will insert as many nodes as possible
+                // in the routing table of the added node.
                 List<INode> closestNodes = addedNode.LOOKUP(tolookId);
-                closestNodes.forEach(n -> addedNode.ADD_CONTACT(n));
             }
             
         }

@@ -1,9 +1,6 @@
 nbproject/private
 build
 statistics
-report.odt
-report.en.odt
-kedemliadesign.drawio
-kedemliadesign.png
+report
 new.csv
-.~lock.report.odt#
+

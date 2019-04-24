@@ -65,7 +65,7 @@ public class RoutingTable implements IRoutingTable{
         try{
             index = findBucketIndex(xordistance);
         } catch (IndexOutOfBoundsException e){
-            return retList;
+            index = 0;
         }
         int tmpindex = index;
         
