@@ -86,10 +86,10 @@ public class StatisticsUtils {
      * This images are removed when we close this script, so the below function is used
      * to take the image and save it in the right place before it gets removed.
      */
-    public void getANDsaveReport(String html, String filename){
+    public void getANDsaveReport(String html, String filename, int imgpos){
             Document doc = Jsoup.parse(html);
             // the first img tag is what we need
-            Element image = doc.select("img").first();
+            Element image = doc.select("img").get(imgpos);
             // deleting the initial string 'file:'
             String url = image.absUrl("src").substring(5); 
             

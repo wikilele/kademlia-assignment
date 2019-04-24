@@ -88,7 +88,7 @@ public class GephiController {
         //computing the statistics
         int nodesNum = computeStatistics(graphModel);
         
-        // generating the image for too many nodes is only time consuming
+        // generating the image for too many nodes is time consuming
         // the image is good only for small numbers of nodes
         if (nodesNum <= 800){
             // Executing FruchtermanReingold  layout algorithm
@@ -136,7 +136,8 @@ public class GephiController {
         System.out.println("Average degree " + degree);
         
         // saving the degree distribution chart image
-         statUtils.getANDsaveReport(deg.getDirectedReport(), "degree_distribution.png");
+         statUtils.getANDsaveReport(deg.getDirectedReport(), "degree_distribution.png",0);
+         statUtils.getANDsaveReport(deg.getDirectedReport(), "outdegree_distribution.png",2);
         
         // Clustering Coefficient
         ClusteringCoefficient clustcoeff = new ClusteringCoefficient();
@@ -149,10 +150,7 @@ public class GephiController {
         gdistance.execute(directedGraph);
         double diameter = gdistance.getDiameter();
         double pathlength = gdistance.getPathLength();
-        
-        // saving the betweenness centrality  chart image
-         statUtils.getANDsaveReport(gdistance.getReport(), "betweennescentrality_distribution.png");
-        
+                
         System.out.println("Diameter " + diameter);
         System.out.println("Path lenght " + pathlength);
         

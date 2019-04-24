@@ -52,10 +52,6 @@ public class NodeLookUpUtil {
         // we assume the caller node has at leat one node in its routing table
         if (kAbsoluteClosestNodes.size() <= 0 ) return new LinkedList<INode>();
         
-        // TODO remove this 
-        // the absolutely closest node to the target 
-        // INode closestNode = kAbsoluteClosestNodes.get(0).getNode();
-        // INode oldclosestNode; // this variable is used to exit the loop below
         // used as exit condition in the while loop
         List<NodeTuple> oldClosestList ;
 
@@ -88,11 +84,6 @@ public class NodeLookUpUtil {
                 kAbsoluteClosestNodes = this.sortANDlimitNodeTuples(kAbsoluteClosestNodes, k);
                 
             }
-            // update closestNode
-            // oldclosestNode = closestNode;
-            // closestNode = kAbsoluteClosestNodes.get(0).getNode();
-            
-        //}while(!closestNode.equalTo(oldclosestNode));
             // we exit if AbsoluteClosestNodes remains the same for 2 consecutives iterations
         }while(!kAbsoluteClosestNodes.equals(oldClosestList ));
 
