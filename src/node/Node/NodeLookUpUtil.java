@@ -31,7 +31,7 @@ public class NodeLookUpUtil {
         this.k = k;
     }    
     
-    public List<INode> lookUp(IIdentifier tolookID) throws Exception{
+    public List<INode> lookUp(IIdentifier tolookID) {
         // used to keep track of the nodes traversed by the FIND_NODE
         List<INode> traversed = new LinkedList(); 
         // this variable is used just to pack and unpack the FIND_NODE response
