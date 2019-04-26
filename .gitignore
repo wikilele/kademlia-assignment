@@ -1,6 +1,10 @@
 nbproject/private
 build
 statistics
-report
+!report
+report/*
+!report/report.en.pdf
+!report/allstats.csv
 new.csv
 
+/dist/
