@@ -8,13 +8,13 @@ from subprocess import Popen
 # $> ant -f build.xml
 #
 
-if not os.path.isfile('./gephi-toolkit-0.9.2-all.jar')
+if not os.path.isfile('./gephi-toolkit-0.9.2-all.jar'):
         print ("download gephi toolkit first. check README")
-        exit
+        exit()
 
 if not os.path.isdir('./build/'):
         print ("run: ant -f build.xml")
-        exit
+        exit()
 
 k_values = [2,8,20]
 n_values = [250, 500, 1000, 2000, 3000]
